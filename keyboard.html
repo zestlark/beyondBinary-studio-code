@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keybaord</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            border: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+            gap: 100px;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .box {
+            width: 100%;
+            background: rgb(24, 24, 24);
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 20px;
+        }
+
+        .box h1 {
+            font-size: 5vw;
+            width: 100%;
+            text-align: center;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(0px);
+            letter-spacing: 3px;
+            transition: 0.5s all ease-in-out;
+        }
+
+        .box .blurbox {
+            background: linear-gradient(rgba(24, 24, 24, 0.714), black);
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            backdrop-filter: blur(5px);
+        }
+
+        .debugger {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            background: red;
+            height: 5px;
+            /* display: none; */
+        }
+
+        .text-form {
+            background: rgb(0, 0, 0);
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .text-form textarea {
+            resize: none;
+            background: rgb(24, 24, 24);
+            color: rgba(255, 255, 255, 0.842);
+            padding: 15px;
+            outline: none;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+            line-height: 20px;
+        }
+
+        .text-form button {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            background: rgba(208, 208, 208, 0.718);
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .text-form button:hover {
+            background: rgb(24, 24, 24);
+            color: grey;
+        }
+
+        .text-form button.random {
+            background: rgb(0, 0, 0);
+            border: 1px solid white;
+            color: white;
+        }
+
+        .scoreboard {
+            display: flex;
+            top: 0;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scoreboard .card {
+            background: rgba(255, 255, 255, 0.114);
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .scoreboard .card h1 {
+            margin-top: 10px;
+        }
+
+        .text h1 .success {
+            color: rgba(77, 255, 77, 0.782);
+        }
+
+        .text h1 .error {
+            color: rgba(255, 47, 47, 0.842);
+        }
+
+        .text h1 .partial {
+            color: rgb(216, 216, 0);
+        }
+
+        .text h1 span.active {
+            text-decoration: underline;
+        }
+
+        .bottomControl {
+            padding: 10px;
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .bottomControl button {
+            padding: 10px;
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+        #mobileInput {
+            display: none;
+        }
+
+        @media (width< 768px) {
+            #mobileInput {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                background: rgba(255, 255, 255, 0.114);
+                color: transparent;
+                text-align: center;
+                font-size: 16px;
+            }
+
+            #mobileInput:focus {
+                opacity: 0;
+                text-align: center;
+                height: 0;
+                overflow: hidden;
+            }
+
+            #mobileInput::placeholder {
+                color: white;
+            }
+
+            .scoreboard {
+                font-size: 14px;
+                gap: 5px;
+            }
+
+            .scoreboard .card h1 {
+                font-size: 12px;
+            }
+
+            body {
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .box h1 {
+                font-size: 22px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .box h1 span {
+                display: inline-block;
+            }
+        }
+
+        #congrats {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.423);
+            backdrop-filter: blur(10px);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            display: none;
+        }
+
+        #congrats .card h1 {
+            margin-bottom: 15px;
+        }
+
+        #congrats .card {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #congrats .card table {
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        #congrats .card button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: transparent;
+            margin-top: 20px;
+            color: white;
+            border: 1px solid white;
+            cursor: pointer;
+        }
+
+        #congrats .card a {
+            margin-top: 20px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scoreboard">
+        <div class="card">
+            <p>Errors</p>
+            <h1 id="errorboard">0</h1>
+        </div>
+        <div class="card">
+            <p>Success</p>
+            <h1 id="successboard">0</h1>
+        </div>
+        <div class="card">
+            <p>Words</p>
+            <h1 id="stateboard">0</h1>
+        </div>
+        <div class="card">
+            <p>time</p>
+            <h1 id="timeboard">0</h1>
+        </div>
+    </div>
+
+    <div class="text-form">
+        <h3>Enter your text here</h3>
+        <br>
+        <textarea name="" id="inputText" cols="40" rows="10" placeholder="Enter your text here"></textarea>
+        <button onclick="getStart()">Start</button>
+        <br>
+        <p><small>or</small></p>
+        <button class="random" onclick="randomStart()"> <i class="ri-sparkling-line"></i> Generate Words</button>
+    </div>
+
+    <input type="text" placeholder="click to start" id="mobileInput">
+
+    <div class="box">
+        <div class="text"></div>
+
+        <div class="blurbox"></div>
+    </div>
+
+    <div class="debugger"></div>
+
+    <div class="bottomControl">
+        <button onclick="newtext()"><i class="ri-add-line"></i> new text</button>
+    </div>
+
+    <div id="congrats">
+        <div class="card">
+            <h1>congratulation</h1>
+            <p>You successfully completed it!</p>
+
+            <table id="lastresult"></table>
+
+            <button onclick="newtext()">Try Again</button>
+            <a onclick="window.location.reload()">start again</a>
+        </div>
+    </div>
+
+    <script>
+
+        function debug(...value) {
+            document.querySelector('.debugger').innerHTML = value;
+        }
+
+        let stateX = 0;
+        let stateY = 0;
+        let scrollfreq = 0
+        let mainText = []
+
+        const userdata = {
+            error: 0,
+            success: 0,
+            currentWords: 0,
+            time: 0,
+            timer: 0
+        }
+
+        const startEventListener = () => {
+            document.addEventListener('keydown', handleKeyDown);
+        };
+
+        const stopEventListener = () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+
+        const handleKeyDown = (event) => {
+            if (event.keyCode >= 48 && event.keyCode <= 90) {
+                checkInput(event.keyCode);
+            }
+        };
+
+        // for mobile 
+        var input_field = document.getElementById('mobileInput');
+        input_field.addEventListener('textInput', function (ev) {
+            var char = ev.data.toLowerCase();
+            var keyCode = char.charCodeAt(0);
+            input_field.value = ''
+            let value = keyCode
+            checkInput(value)
+        });
+
+        input_field.addEventListener('keydown', () => {
+            input_field.value = ""
+        });
+
+        async function randomStart() {
+            const url = 'https://shortstories-api.onrender.com/';
+            const response = await fetch(url);
+            const text = await response.json();
+            inputText.value = text.story
+        }
+
+
+        function getStart() {
+            let text = inputText.value.toLowerCase();
+            if (text.length == 0) return ''
+            document.querySelector('.text-form').style.display = 'none'
+            const noSpecialCharacters = text.replace(/[^a-zA-Z0-9 ]/g, '');
+            noSpecialCharacters.split(' ').forEach(element => {
+                let h1Array = []
+                element.split('').forEach(char => {
+                    h1Array.push(char)
+                });
+                mainText.push(h1Array)
+            });
+
+            putHtml(mainText)
+
+            document.getElementById(stateX + '' + stateY).classList.add('active')
+            startEventListener()
+        }
+
+        if (localStorage.getItem('mainText') && localStorage.getItem('mainText').length > 0) {
+            inputText.value = localStorage.getItem('mainText')
+            getStart()
+        }
+
+        function putHtml(htmlArray) {
+            for (let i = 0; i < htmlArray.length; i++) {
+                const h1 = document.createElement('h1')
+                for (let j = 0; j < htmlArray[i].length; j++) {
+                    const span = document.createElement('span');
+                    span.id = i + '' + j
+                    span.textContent += htmlArray[i][j];
+                    h1.appendChild(span);
+                }
+                document.querySelector('.text').append(h1)
+            }
+
+            localStorage.setItem('mainText', inputText.value.toLowerCase())
+        }
+
+        function newtext() {
+            document.querySelector('.text-form').style.display = 'flex';
+            inputText.value = '';
+            localStorage.setItem('mainText', '');
+
+            document.getElementById('congrats').style.display = 'none';
+
+            const textDiv = document.querySelector('.text');
+            textDiv.innerHTML = '';
+
+            stateX = 0;
+            stateY = 0;
+            scrollfreq = 0;
+            mainText = [];
+            stopEventListener()
+            document.querySelector('.debugger').style.width = 0
+        }
+
+        function congrats() {
+            document.getElementById('congrats').style.display = 'grid';
+            let result = `
+                <tr>
+                    <td>Error</td>
+                    <td>:</td>
+                    <td>${userdata.error}</td>
+                </tr>
+                <tr>
+                    <td>success</td>
+                    <td>:</td>
+                    <td>${userdata.success}</td>
+                </tr>
+                <tr>
+                    <td>Words</td>
+                    <td>:</td>
+                    <td>${userdata.currentWords}</td>
+                </tr>
+                <tr>
+                    <td>time</td>
+                    <td>:</td>
+                    <td>${userdata.time}</td>
+                </tr>
+            `;
+            document.getElementById('lastresult').innerHTML = result;
+        }
+
+        let checkInput = (value) => {
+            let el = document.getElementById(stateX + '' + stateY)
+            value = String.fromCharCode(value).toLowerCase();
+            if (value.toLowerCase() == mainText[stateX][stateY]) {
+                if (el.classList.contains('error')) {
+                    el.classList.add('partial')
+                } else {
+                    el.classList.add('success')
+                }
+
+                if (mainText[stateX].length - 1 == stateY) {
+
+                    scrollfreq = scrollfreq - 150
+                    document.querySelector('.text').querySelectorAll('h1').forEach(el => {
+                        el.style.transform = `translateY(${scrollfreq}px)`
+                    })
+
+                    userdata.currentWords++
+                    userdata.success++
+                    updatescore()
+
+                    if (stateX === mainText.length - 1 && stateY === mainText[stateX].length - 1) {
+                        setTimeout(() => { congrats() }, 500)
+                        return
+                    }
+
+                    stateX++
+                    stateY = 0
+                } else {
+                    stateY++
+                    userdata.success++
+                    updatescore()
+                }
+
+                document.getElementById(stateX + '' + stateY).classList.add('active')
+
+
+            } else {
+                if (!el.classList.contains('error')) {
+                    el.classList.add('error')
+                    userdata.error++
+                }
+            }
+            updatescore()
+        }
+
+
+        const updateProgressBar = (current, total) => {
+            const percentage = (current / total) * 100;
+            document.querySelector('.debugger').style.width = percentage + '%';
+        }
+
+        const updatescore = () => {
+            let errorboard = document.getElementById('errorboard')
+            let successboard = document.getElementById('successboard')
+            let timeboard = document.getElementById('timeboard')
+            let stateboard = document.getElementById('stateboard')
+
+            errorboard.innerText = userdata.error
+            successboard.innerText = userdata.success
+            timeboard.innerHTML = userdata.time
+            stateboard.innerText = userdata.currentWords + 0 + '/' + mainText.length
+            updateProgressBar(userdata.currentWords, mainText.length);
+        }
+
+        let timerInterval;
+
+        function starttime() {
+            userdata.timer = 0;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTime, 1000);
+        }
+
+        function updateTime() {
+            userdata.timer++;
+            const minutes = Math.floor(userdata.timer / 60);
+            const seconds = userdata.timer % 60;
+            userdata.time =`${minutes}m ${seconds}s`;
+            updatescore()
+        }
+
+        starttime();
+
+        updatescore()
+    </script>
+</body>
+
+</html>
