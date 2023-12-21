@@ -436,6 +436,13 @@
             stateY = 0;
             scrollfreq = 0;
             mainText = [];
+            userdata = {
+                error: 0,
+                success: 0,
+                currentWords: 0,
+                time: 0,
+                timer: 0
+            }
             stopEventListener()
             document.querySelector('.debugger').style.width = 0
         }
@@ -544,7 +551,7 @@
             userdata.timer++;
             const minutes = Math.floor(userdata.timer / 60);
             const seconds = userdata.timer % 60;
-            userdata.time =`${minutes}m ${seconds}s`;
+            userdata.time = `${minutes}m ${seconds}s`;
             updatescore()
         }
 

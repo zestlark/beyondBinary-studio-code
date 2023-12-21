@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond binary studio</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        border: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    body {
+        background: black;
+        color: white;
+        min-height: 100vh;
+        padding: 20px;
+        letter-spacing: 1px;
+    }
+
+    p {
+        line-height: 25px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 55px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .banner {
+        aspect-ratio: 16/4;
+        background-image: url(assets/banner.png);
+        background-size: 100%;
+        background-position: center center;
+        margin-top: 30px;
+        border-radius: 10px;
+        transition: 01s all ease-in;
+    }
+
+    .banner:hover {
+        background-size: 170%;
+    }
+
+    section {
+        margin-top: 50px;
+    }
+
+    section.projects ul li,
+    section.social ul li {
+        margin-left: 15px;
+        margin-top: 20px;
+    }
+
+    section.projects ul li a,
+    section.social ul li a {
+        position: relative;
+    }
+
+    section.projects ul li a:hover,
+    section.social ul li a:hover {
+        color: red;
+    }
+
+    section.projects ul li a:hover::before,
+    section.social ul li a:hover::before {
+        width: 100%;
+    }
+
+    section.projects ul li a::before,
+    section.social ul li a::before {
+        content: "";
+        background: red;
+        position: absolute;
+        bottom: -5px;
+        width: 100%;
+        height: 1px;
+        width: 0;
+        transition: 0.5s all;
+    }
+
+    section.social ul li a:hover {
+        color: lightgreen;
+    }
+
+    section.social ul li a::before {
+        background: lightgreen;
+    }
+
+    #project-frame {
+        width: 250px;
+        height: 170px;
+        background: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transition: 0.5s;
+        display: none;
+        opacity: 50%;
+        z-index: -2;
+        border: 1px solid grey;
+    }
+
+    footer {
+        background: #c1987a;
+        margin-top: 50px;
+        color: black;
+
+    }
+
+    footer p {
+        text-align: center;
+        padding: 40px;
+    }
+
+    #cursor {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgb(255, 255, 255);
+        position: absolute;
+        z-index: 9;
+        pointer-events: none;
+        /* Allows the cursor to interact with elements beneath it */
+        transform: translate(-50%, -50%);
+        mix-blend-mode: difference;
+        filter: blur(6px);
+    }
+</style>
+
+<body>
+
+    <div id="cursor"></div>
+
+    <div class="container">
+        <h1>Beyond Binary Studios</h1>
+        <p>Welcome to BeyondBinary Studios, Discover the next frontier in UI design at BeyondBinary. Dive into tutorials
+            on
+            React, Figma, HTML, CSS, and JavaScript, unlocking the secrets of dreamy interfaces and robust backend
+            development. Elevate your skills with our creative coding insights. Join a community redefining digital
+            elegance. Explore BeyondBinary for the future of UI innovation and design.</p>
+
+        <div class="banner" alt=""></div>
+
+        <section class="projects">
+            <h2>Projects</h2>
+            <ul>
+                <li><a href="keyboard.html">keyBoard (fast typer)</a></li>
+                <li><a href="alivebutton.html">Alive button</a></li>
+            </ul>
+
+            <iframe id="project-frame" src="" scrolling="no" frameborder="0"></iframe>
+        </section>
+
+        <section class="social">
+            <h2>Social</h2>
+            <ul>
+                <li><a href="https://www.youtube.com/@BeyondBinaryStudios">Youtube</a></li>
+                <li><a href="https://github.com/zestlark">Github (zestlark)</a></li>
+                <li><a href="https://github.com/JunaidParkar">Github (junaid)</a></li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p> &#169;BeyondBinaryStudios</p>
+        </div>
+    </footer>
+</body>
+<script>
+    const links = document.querySelectorAll('.projects ul li a');
+
+    const setPositionofFrame = (x, y, href) => {
+        document.getElementById('project-frame').style.top = y - 100 + 'px'
+        document.getElementById('project-frame').style.left = x + 100 + 'px'
+        document.getElementById('project-frame').src = href
+        document.getElementById('project-frame').style.display = 'block'
+    }
+
+    links.forEach(link => {
+
+        let x = 0
+        let y = 0
+
+        link.addEventListener('mouseover', (event) => {
+            x = event.clientX;
+            y = event.clientY;
+            const href = link.getAttribute('href');
+            console.log(`Position X: ${x}, Position Y: ${y}, Link: ${href}`);
+            setPositionofFrame(x, y, href)
+        });
+
+        link.addEventListener('mouseleave', () => {
+            document.getElementById('project-frame').style.display = 'none'
+        })
+
+        link.addEventListener('touchstart', (event) => {
+            const touch = event.touches[0];
+            x = touch.clientX;
+            y = touch.clientY;
+            const href = link.getAttribute('href');
+            console.log(`Position X: ${x}, Position Y: ${y}, Link: ${href}`);
+            setPositionofFrame(x, y)
+        });
+
+        link.addEventListener('touchend', () => {
+            document.getElementById('project-frame').style.display = 'none'
+        })
+
+
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        const cursor = document.getElementById('cursor');
+        cursor.style.display = 'block'
+        cursor.style.left = e.pageX - 0 + 'px';
+        cursor.style.top = e.pageY + 'px';
+    });
+
+    document.addEventListener('mouseleave', (e) => {
+        const cursor = document.getElementById('cursor');
+        cursor.style.display = 'none'
+    });
+</script>
+
+</html>
