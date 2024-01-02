@@ -328,8 +328,9 @@
             <a onclick="window.location.reload()">start again</a>
         </div>
     </div>
-
+<script src="https://zestlark.github.io/Text-predection-library/text-predection-library.js"></script>
     <script>
+        const textpredection = new TextPredict('#inputText')
 
         function debug(...value) {
             document.querySelector('.debugger').innerHTML = value;
