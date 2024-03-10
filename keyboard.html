@@ -384,7 +384,7 @@
 
         function getStart() {
             let text = inputText.value.toLowerCase();
-            if (text.length == 0) return ''
+            if (text.trim().length == 0) return ''
             const noSpecialCharacters = text.replace(/[^a-zA-Z0-9 ]/g, '');
             noSpecialCharacters.split(' ').forEach(element => {
                 if(element == "") return
