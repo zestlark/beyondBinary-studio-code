@@ -340,7 +340,7 @@
         let scrollfreq = 0
         let mainText = []
 
-        const userdata = {
+        let userdata = {
             error: 0,
             success: 0,
             currentWords: 0,
@@ -387,9 +387,10 @@
         function getStart() {
             let text = inputText.value.toLowerCase();
             if (text.length == 0) return ''
-            document.querySelector('.text-form').style.display = 'none'
             const noSpecialCharacters = text.replace(/[^a-zA-Z0-9 ]/g, '');
             noSpecialCharacters.split(' ').forEach(element => {
+                if(element == "") return
+                console.log(element);
                 let h1Array = []
                 element.split('').forEach(char => {
                     h1Array.push(char)
@@ -398,6 +399,18 @@
             });
 
             putHtml(mainText)
+
+            userdata = {
+                error: 0,
+                success: 0,
+                currentWords: 0,
+                time: 0,
+                timer: 0
+            }
+
+            updatescore()
+
+            document.querySelector('.text-form').style.display = 'none'
 
             document.getElementById(stateX + '' + stateY).classList.add('active')
             startEventListener()
@@ -444,6 +457,7 @@
                 time: 0,
                 timer: 0
             }
+
             stopEventListener()
             document.querySelector('.debugger').style.width = 0
         }
@@ -522,12 +536,12 @@
         }
 
 
-        const updateProgressBar = (current, total) => {
+        function updateProgressBar(current, total){
             const percentage = (current / total) * 100;
             document.querySelector('.debugger').style.width = percentage + '%';
         }
 
-        const updatescore = () => {
+        function updatescore() {
             let errorboard = document.getElementById('errorboard')
             let successboard = document.getElementById('successboard')
             let timeboard = document.getElementById('timeboard')
