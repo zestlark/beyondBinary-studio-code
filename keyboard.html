@@ -179,7 +179,6 @@
                 color: transparent;
                 text-align: center;
                 font-size: 16px;
-                display: none;
             }
 
             #mobileInput:focus {
@@ -328,9 +327,8 @@
             <a onclick="window.location.reload()">start again</a>
         </div>
     </div>
-
+<script src="https://zestlark.github.io/Text-predection-library/text-predection-library.js"></script>
     <script>
-
         function debug(...value) {
             document.querySelector('.debugger').innerHTML = value;
         }
@@ -573,6 +571,8 @@
         starttime();
 
         updatescore()
+
+        const textpredection = new TextPredict('#inputText',false)
     </script>
 </body>
 
